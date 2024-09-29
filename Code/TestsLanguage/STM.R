@@ -1,5 +1,8 @@
 library(stm)
 
+dfManifestos <- read.csv('dataManifestos.csv') %>% 
+  select(-X)
+
 dfManifestos <- dfManifestos %>% mutate(treatment = vote_margin>0)
 
 corpus <- Corpus(VectorSource(dfManifestos$manifesto))
@@ -32,10 +35,11 @@ stm_model <- stm(documents = documents,
                  K = 10,  # Number of topics
                  prevalence = ~ treatment,  # Use binary treatment as a covariate
                  data = meta_data,
-                 seed = 12345)
+                 seed = 123)
 
 topic_effects <- estimateEffect(1:10 ~ treatment, stm_model, metadata = meta_data, uncertainty = "Global")
 
 # Step 2: View the summary of the estimated effects
+summary(stm_model)
 summary(topic_effects)
 
