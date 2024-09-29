@@ -99,7 +99,7 @@ cleaned_tokens <- cleaned_tokens %>% anti_join(dfCount, by = 'word')
 word_counts <- cleaned_tokens %>%
   distinct(id_municipio, ano, sequencial, word) %>%
   count(word, name = "unique_texts") %>% 
-  filter(unique_texts >= 20,
+  filter(unique_texts >= floor(964*0.01),
          unique_texts < floor(964*0.7)) %>%
   pull(word) %>% 
   as.tibble %>% 
