@@ -12,7 +12,7 @@ dfManifestos <- read.csv('dataManifestos.csv') %>%
 
 dfTokens <- dfManifestos %>%
   unnest_tokens(word, manifesto) %>% 
-  #mutate(word = SnowballC::wordStem(word, language = 'portuguese')) %>% 
+  mutate(word = SnowballC::wordStem(word, language = 'portuguese')) %>% 
   group_by(word) %>% 
   summarise(wcount = n()) %>% 
   ungroup %>% 
@@ -23,7 +23,7 @@ dfFeatures <- dfTokens[1:600,'word']
 dfClean <- dfManifestos %>%
   select(id_municipio, ano, sequencial, manifesto) %>% 
   unnest_tokens(word, manifesto) %>% 
-  #mutate(word = SnowballC::wordStem(word, language = 'portuguese')) %>% 
+  mutate(word = SnowballC::wordStem(word, language = 'portuguese')) %>% 
   semi_join(dfFeatures, by = 'word') %>% 
   group_by(id_municipio, ano, sequencial) %>% 
   summarise(manifesto = str_c(word, collapse = ' ')) %>% 
