@@ -32,6 +32,19 @@ meta_data <- dfManifestos[rowSums(as.matrix(dtm)) > 0, "treatment", drop = FALSE
 # Step 4: Fit the STM model
 stm_model <- stm(documents = documents,
                  vocab = vocab,
+                 K = 5,  # Number of topics
+                 prevalence = ~ treatment,  # Use binary treatment as a covariate
+                 data = meta_data,
+                 seed = 123)
+
+topic_effects <- estimateEffect(1:5 ~ treatment, stm_model, metadata = meta_data, uncertainty = "Global")
+
+# Step 2: View the summary of the estimated effects
+summary(stm_model)
+summary(topic_effects)
+
+stm_model <- stm(documents = documents,
+                 vocab = vocab,
                  K = 10,  # Number of topics
                  prevalence = ~ treatment,  # Use binary treatment as a covariate
                  data = meta_data,
@@ -43,3 +56,31 @@ topic_effects <- estimateEffect(1:10 ~ treatment, stm_model, metadata = meta_dat
 summary(stm_model)
 summary(topic_effects)
 
+stm_model <- stm(documents = documents,
+                 vocab = vocab,
+                 K = 15,  # Number of topics
+                 prevalence = ~ treatment,  # Use binary treatment as a covariate
+                 data = meta_data,
+                 seed = 123)
+
+topic_effects <- estimateEffect(1:15 ~ treatment, stm_model, metadata = meta_data, uncertainty = "Global")
+
+# Step 2: View the summary of the estimated effects
+summary(stm_model)
+summary(topic_effects)
+
+stm_model <- stm(documents = documents,
+                 vocab = vocab,
+                 K = 20,  # Number of topics
+                 prevalence = ~ treatment,  # Use binary treatment as a covariate
+                 data = meta_data,
+                 seed = 123)
+
+topic_effects <- estimateEffect(1:20 ~ treatment, stm_model, metadata = meta_data, uncertainty = "Global")
+
+# Step 2: View the summary of the estimated effects
+summary(stm_model)
+summary(topic_effects)
+
+k_search <- searchK(documents, vocab, K = c(5, 10, 15, 20), prevalence = ~ treatment, data = meta_data)
+plot(k_search)
