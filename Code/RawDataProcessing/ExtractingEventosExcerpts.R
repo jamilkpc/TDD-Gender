@@ -86,3 +86,4 @@ df_window_plural <- df_windows %>%
 
 write.csv(df_window_singular, 'ValidationEvents1.csv')
 write.csv(df_window_plural, 'ValidationEvents2.csv')
+write.csv(rbind(df_window_singular, df_window_plural %>% rename(context_evento = context_eventos)), 'ValidationEvents.csv')
