@@ -115,19 +115,27 @@ dfRDD2 <- dfRDD2 %>%
 library(rdrobust)
 
 R <- dfRDD2$vote_margin
-Y <- dfRDD2$word_count
+Y <- log(dfRDD2$word_count)
 
-summary(rdrobust(Y, R, 0))
+summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio))
+rdr <- rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio)
+h_l <- rdr$bws[1]  # bandwidth
+
+rdplot(y = log(dfRDD2$word_count), x = dfRDD2$vote_margin, c = 0, x.lim = c(-h_l, h_l), x.label = 'Running Variable', y.label = 'Log(Length)')
 
 R <- dfRDD2$vote_margin
 Y <- dfRDD2$sentiment
 
-summary(rdrobust(Y, R, 0))
+summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio))
 
 R <- dfRDD2$vote_margin
 Y <- dfRDD2$riqueza
 
-summary(rdrobust(Y, R, 0))
+summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio))
+rdr <- rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio)
+h_l <- rdr$bws[1]  # bandwidth
+
+rdplot(y = log(dfRDD2$word_count), x = dfRDD2$vote_margin, c = 0, x.lim = c(-h_l, h_l), x.label = 'Running Variable', y.label = 'Lexical Diversity')
 
 ##### Continuation to do a credit claming dataframe
 

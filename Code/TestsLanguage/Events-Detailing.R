@@ -104,6 +104,9 @@ write.csv(rbind(df_window_singular, df_window_plural %>% rename(context_evento =
 
 df_window = read.csv('ValidationEvents.csv') %>% select(-X)
 
+#pattern <- paste0("\\b(", paste(c("evento", "eventos"), collapse = "|"), ")\\b")
+#df_window$context_evento <- str_replace_all(df_window$context_evento, pattern, " ")
+
 texts <- df_window$context_evento
 
 processed <- textProcessor(texts, metadata = NULL)
@@ -113,10 +116,28 @@ out <- prepDocuments(processed$documents, processed$vocab, processed$meta)
 docs <- out$documents
 vocab <- out$vocab
 
+k_search <- searchK(docs, vocab, K = c(4, 6, 8, 10))
+plot(k_search)
+
 stm_model <- stm(documents = docs, vocab = vocab, K = 6, data = NULL)
 
 
 labelTopics(stm_model, n = 8)
 
-plot.STM(stm_model, type = "summary")
 
+average_topic_proportions <- colMeans(stm_model$theta)
+
+# Convert to a data frame for ggplot
+topic_proportions_df <- data.frame(
+  Topic = c("Sport", "Big Events", "Cultural Party", "Construction", "Business", "Incentives to Culture"),
+  Proportion = average_topic_proportions
+)
+
+# Create the bar plot
+ggplot(topic_proportions_df, aes(x = reorder(Topic, Proportion), y = Proportion)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +  # Flip coordinates for better readability
+  labs(title = "Average Topic Proportions",
+       x = "",
+       y = "Average Proportion") +
+  theme_minimal()
