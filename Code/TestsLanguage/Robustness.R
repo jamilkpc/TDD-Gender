@@ -10,7 +10,7 @@ library(stopwords)
 ### I use RDRobust in all analyses
 
 dfRDD <- read.csv('dataCovariates.csv') %>% select(-X)
-dfManifestos <- read.csv('20240927_br_mayors_proposal.csv')
+dfManifestos <- read.csv('~/Downloads/20240927_br_mayors_proposal.csv')
 dfCandidato <- read.csv('CandidatoPrefeito.csv')
 dfVotos <- read.csv('VotosMunicipioPrefeito.csv')
 
@@ -109,6 +109,7 @@ calculate_lexical_diversity <- function(text) {
 
 # Create a sentiment column (in Portuguese)
 dfRDD2 <- dfRDD2 %>%
+  drop_na %>% 
   mutate(sentiment = sentimento(manifesto),
          riqueza = sapply(manifesto, calculate_lexical_diversity))
 
@@ -117,9 +118,26 @@ library(rdrobust)
 R <- dfRDD2$vote_margin
 Y <- log(dfRDD2$word_count)
 
+dfRDD2 <- dfRDD2 %>% mutate(uf = floor(id_municipio/100000))
+dummy_matrix <- model.matrix(~ as.factor(uf) + as.factor(ano) + open, data = dfRDD2)
+X <- dummy_matrix[,-1]
+
 summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio))
 rdr <- rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio)
 h_l <- rdr$bws[1]  # bandwidth
+
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
+model2 <- rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio)
+mean(Y[abs(R)<model2$bws[1]], na.rm = T)
+sd(Y[abs(R)<model2$bws[1]], na.rm = T)
+summary(model2)
+
+summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio, kernel = 'uniform'))
+summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio, kernel = 'uniform'))
 
 rdplot(y = log(dfRDD2$word_count), x = dfRDD2$vote_margin, c = 0, x.lim = c(-h_l, h_l), x.label = 'Running Variable', y.label = 'Log(Length)')
 
@@ -134,6 +152,16 @@ Y <- dfRDD2$riqueza
 summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio))
 rdr <- rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio)
 h_l <- rdr$bws[1]  # bandwidth
+
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
+model2 <- rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio)
+mean(Y[abs(R)<model2$bws[1]], na.rm = T)
+sd(Y[abs(R)<model2$bws[1]], na.rm = T)
+summary(model2)
 
 rdplot(y = log(dfRDD2$word_count), x = dfRDD2$vote_margin, c = 0, x.lim = c(-h_l, h_l), x.label = 'Running Variable', y.label = 'Lexical Diversity')
 

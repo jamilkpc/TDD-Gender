@@ -91,9 +91,51 @@ stm_model <- stm(documents = documents,
 
 topic_effects <- estimateEffect(1:15 ~ treatment, stm_model, metadata = meta_data, uncertainty = "Global")
 
-summary(stm_model)
-summary(topic_effects)
+summary_effects <- summary(topic_effects)
 
+# Convert the summary to a data frame
+effects_df <- data.frame()
+
+# Loop through the topics to extract estimates and CIs
+for (i in 1:length(summary_effects$tables)) {
+  topic_df <- as.data.frame(summary_effects$tables[[i]])
+  topic_df$Topic <- i  # Add a column for topic numbers
+  effects_df <- rbind(effects_df, topic_df)  # Combine all topics' data into one data frame
+}
+
+effects_df_real <- effects_df[2*(1:15),c(1,2, 5)]
+colnames(effects_df_real) <- c("estimate", 'std', 'topic')
+effects_df_real <- effects_df_real %>% 
+  mutate(lci = estimate - 1.96*std,
+         hci = estimate + 1.96*std,
+         topic = as.character(topic)) %>% 
+  mutate(topic = if_else(topic == '1', 'Topic 01', topic),
+         topic = if_else(topic == '2', 'Topic 02', topic),
+         topic = if_else(topic == '3', 'Topic 03', topic),
+         topic = if_else(topic == '4', 'Topic 04', topic),
+         topic = if_else(topic == '5', 'Topic 05', topic),
+         topic = if_else(topic == '6', 'Topic 06', topic),
+         topic = if_else(topic == '7', 'Topic 07', topic),
+         topic = if_else(topic == '8', 'Topic 08', topic),
+         topic = if_else(topic == '9', 'Topic 09', topic),
+         topic = if_else(topic == '10','Topic 10', topic),
+         topic = if_else(topic == '11','Topic 11', topic),
+         topic = if_else(topic == '12','Topic 12 (Tourism)', topic),
+         topic = if_else(topic == '13','Topic 13', topic),
+         topic = if_else(topic == '14','Topic 14', topic),
+         topic = if_else(topic == '15','Topic 15', topic))
+
+ggplot(effects_df_real, aes(x = factor(topic), y = estimate, ymin = lci, ymax = hci)) +
+  geom_pointrange() +
+  coord_flip() +
+  labs(title = "Causal Impact of Treatment on Topics", 
+       x = "Topics", 
+       y = "Effect Size") +
+  theme_minimal() +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed")
+
+
+# Validation of Number of Topics
 
 k_search <- searchK(documents, vocab, K = c(5, 10, 15, 20), prevalence = ~ treatment, data = meta_data)
 plot(k_search)

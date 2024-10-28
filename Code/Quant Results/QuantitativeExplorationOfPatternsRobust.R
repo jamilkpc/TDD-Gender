@@ -55,25 +55,37 @@ dfRDD <- read.csv('dataCovariates.csv') %>% select(-X) %>%
 R <- dfRDD$vote_margin
 Y <- dfRDD$tamanho
 
-summary(rdrobust(Y, R, 0, cluster = dfRDD$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Testing Gender Composition of Opposition
 R <- dfRDD$vote_margin
 Y <- dfRDD$homem
 
-summary(rdrobust(Y, R, 0, cluster = dfRDD$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Testing Qualification of Opposition
 R <- dfRDD$vote_margin
 Y <- dfRDD$educado
 
-summary(rdrobust(Y, R, 0, cluster = dfRDD$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Testing Ideology of Opposition
 R <- dfRDD$vote_margin
 Y <- dfRDD$esquerda
 
-summary(rdrobust(Y, R, 0, cluster = dfRDD$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Now, testing if it is important for the incumbent to be running for reelection
 dfReelection <- dfCandidato %>% left_join(dfEleitos) %>% 
@@ -91,25 +103,37 @@ dfReelection <- dfReelection %>% left_join(dfRDD) %>% drop_na
 R <- dfReelection$vote_margin
 Y <- dfReelection$tamanho
 
-summary(rdrobust(Y, R, 0, cluster = dfReelection$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfReelection$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Testing Gender Composition of Opposition
 R <- dfReelection$vote_margin
 Y <- dfReelection$homem
 
-summary(rdrobust(Y, R, 0, cluster = dfReelection$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfReelection$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Testing Qualification of Opposition
 R <- dfReelection$vote_margin
 Y <- dfReelection$educado
 
-summary(rdrobust(Y, R, 0, cluster = dfReelection$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfReelection$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Testing Ideology of Opposition
 R <- dfReelection$vote_margin
 Y <- dfReelection$esquerda
 
-summary(rdrobust(Y, R, 0, cluster = dfReelection$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfReelection$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Now, placebo test
 dfOpenSeat <- dfCandidato %>% left_join(dfEleitos) %>% 
@@ -127,22 +151,34 @@ dfOpenSeat <- dfOpenSeat %>% left_join(dfRDD) %>% drop_na
 R <- dfOpenSeat$vote_margin
 Y <- dfOpenSeat$tamanho
 
-summary(rdrobust(Y, R, 0, cluster = dfOpenSeat$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfOpenSeat$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Testing Gender Composition of Opposition
 R <- dfOpenSeat$vote_margin
 Y <- dfOpenSeat$homem
 
-summary(rdrobust(Y, R, 0, cluster = dfOpenSeat$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfOpenSeat$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Testing Qualification of Opposition
 R <- dfOpenSeat$vote_margin
 Y <- dfOpenSeat$educado
 
-summary(rdrobust(Y, R, 0, cluster = dfOpenSeat$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfOpenSeat$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 # Testing Ideology of Opposition
 R <- dfOpenSeat$vote_margin
 Y <- dfOpenSeat$esquerda
 
-summary(rdrobust(Y, R, 0, cluster = dfOpenSeat$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfOpenSeat$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)

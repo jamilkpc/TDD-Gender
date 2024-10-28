@@ -49,14 +49,41 @@ X <- dummy_matrix[,-1]
 R <- dfRDD$vote_margin
 Y <- dfRDD$educado
 
-summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
+model1 <- rdrobust(Y, R, 0, covs = X, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
 
 R <- dfRDD$vote_margin
 Y <- dfRDD$esquerda
 
-summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
+model1 <- rdrobust(Y, R, 0, covs = X, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
 
 R <- dfRDD$vote_margin
 Y <- dfRDD$idade
 
-summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD$id_municipio))
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
+model1 <- rdrobust(Y, R, 0, covs = X, cluster = dfRDD$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+

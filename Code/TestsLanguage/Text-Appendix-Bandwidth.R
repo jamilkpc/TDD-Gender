@@ -1,3 +1,14 @@
+library(tidyverse)
+library(stm)
+library(stringi)
+library(tidytext)
+library(stopwords)
+library(SnowballC)
+library(text2vec)
+library(tm)
+library(hdm)
+library(ggplot2)
+
 dfManifestos <- read.csv('dataManifestosRobustness.csv') %>% 
   select(-X)
 
@@ -39,6 +50,42 @@ topic_effects <- estimateEffect(1:10 ~ treatment, stm_model, metadata = meta_dat
 summary(stm_model)
 
 summary_effects <- summary(topic_effects)
+
+# Convert the summary to a data frame
+effects_df <- data.frame()
+
+# Loop through the topics to extract estimates and CIs
+for (i in 1:length(summary_effects$tables)) {
+  topic_df <- as.data.frame(summary_effects$tables[[i]])
+  topic_df$Topic <- i  # Add a column for topic numbers
+  effects_df <- rbind(effects_df, topic_df)  # Combine all topics' data into one data frame
+}
+
+effects_df_real <- effects_df[2*(1:10),c(1,2, 5)]
+colnames(effects_df_real) <- c("estimate", 'std', 'topic')
+effects_df_real <- effects_df_real %>% 
+  mutate(lci = estimate - 1.96*std,
+         hci = estimate + 1.96*std,
+         topic = as.character(topic)) %>% 
+  mutate(topic = if_else(topic == '1', '01. Tourism', topic),
+         topic = if_else(topic == '2', '02. Community and Infrastructure', topic),
+         topic = if_else(topic == '3', '03. Local Business', topic),
+         topic = if_else(topic == '4', '04. Violence', topic),
+         topic = if_else(topic == '5', '05. OCR', topic),
+         topic = if_else(topic == '6', '06. Formatation', topic),
+         topic = if_else(topic == '7', '07. Promises and Engagement', topic),
+         topic = if_else(topic == '8', '08. Environmental', topic),
+         topic = if_else(topic == '9', '09. Agricultural', topic),
+         topic = if_else(topic == '10','10. Social Rights and Development', topic))
+
+ggplot(effects_df_real, aes(x = factor(topic), y = estimate, ymin = lci, ymax = hci)) +
+  geom_pointrange() +
+  coord_flip() +
+  labs(title = "Causal Impact of Treatment on Topics", 
+       x = "Topics", 
+       y = "Effect Size") +
+  theme_minimal() +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed")
 
 
 dfTokens <- dfManifestos %>%
