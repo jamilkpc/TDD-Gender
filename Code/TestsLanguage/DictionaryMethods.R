@@ -186,7 +186,6 @@ mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
 
-
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, kernel = 'uniform')
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
@@ -243,22 +242,22 @@ mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
 
-model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, kernel = 'epanechnikov')
-mean(Y[abs(R)<model$bws[1]], na.rm = T)
-sd(Y[abs(R)<model$bws[1]], na.rm = T)
-summary(model)
-
-model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, kernel = 'epanechnikov')
-mean(Y[abs(R)<model$bws[1]], na.rm = T)
-sd(Y[abs(R)<model$bws[1]], na.rm = T)
-summary(model)
-
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, kernel = 'uniform')
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
 
 model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, kernel = 'uniform')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, kernel = 'epanechnikov')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, kernel = 'epanechnikov')
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)

@@ -139,12 +139,10 @@ summary(model2)
 summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio, kernel = 'uniform'))
 summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio, kernel = 'uniform'))
 
+summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio, kernel = 'epanechnikov'))
+summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio, kernel = 'epanechnikov'))
+
 rdplot(y = log(dfRDD2$word_count), x = dfRDD2$vote_margin, c = 0, x.lim = c(-h_l, h_l), x.label = 'Running Variable', y.label = 'Log(Length)')
-
-R <- dfRDD2$vote_margin
-Y <- dfRDD2$sentiment
-
-summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio))
 
 R <- dfRDD2$vote_margin
 Y <- dfRDD2$riqueza
@@ -163,7 +161,31 @@ mean(Y[abs(R)<model2$bws[1]], na.rm = T)
 sd(Y[abs(R)<model2$bws[1]], na.rm = T)
 summary(model2)
 
+summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio, kernel = 'uniform'))
+summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio, kernel = 'uniform'))
+
+summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio, kernel = 'epanechnikov'))
+summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio, kernel = 'epanechnikov'))
+
 rdplot(y = log(dfRDD2$word_count), x = dfRDD2$vote_margin, c = 0, x.lim = c(-h_l, h_l), x.label = 'Running Variable', y.label = 'Lexical Diversity')
+
+R <- dfRDD2$vote_margin
+Y <- dfRDD2$sentiment
+
+model1 <- rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
+model1 <- rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
+summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio, kernel = 'uniform'))
+summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio, kernel = 'uniform'))
+summary(rdrobust(Y, R, 0, cluster = dfRDD2$id_municipio, kernel = 'epanechnikov'))
+summary(rdrobust(Y, R, 0, covs = X, cluster = dfRDD2$id_municipio, kernel = 'epanechnikov'))
 
 ##### Continuation to do a credit claming dataframe
 
@@ -271,12 +293,31 @@ dfRDDcomp <- dfRDDcomp %>%
   mutate(cosine_similarity = mapply(calculate_cosine_similarity, manifesto_incumbente, manifesto),
          jaccard_similarity = mapply(calculate_jaccard_similarity, manifesto_incumbente, manifesto))
 
+dummy_matrix <- model.matrix(~ as.factor(uf) + as.factor(ano) + open, data = dfRDDcomp)
+X <- dummy_matrix[,-1]
+
 R <- dfRDDcomp$vote_margin
 Y <- dfRDDcomp$cosine_similarity
 
-summary(rdrobust(Y, R, 0))
+model1 <- rdrobust(Y, R, 0, cluster = dfRDDcomp$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
+model1 <- rdrobust(Y, R, 0, covs = X, cluster = dfRDDcomp$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
 
 R <- dfRDDcomp$vote_margin
 Y <- dfRDDcomp$jaccard_similarity
 
-summary(rdrobust(Y, R, 0))
+model1 <- rdrobust(Y, R, 0, cluster = dfRDDcomp$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
+
+model1 <- rdrobust(Y, R, 0, covs = X, cluster = dfRDDcomp$id_municipio)
+mean(Y[abs(R)<model1$bws[1]], na.rm = T)
+sd(Y[abs(R)<model1$bws[1]], na.rm = T)
+summary(model1)
