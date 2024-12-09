@@ -3,11 +3,17 @@ library(stringi)
 library(tidytext)
 library(stopwords)
 library(rdrobust)
+library(rddensity)
+library(rdpower)
 
 dfRDD <- read.csv('dataCovariates.csv') %>% select(-X)
 dfManifestos <- read.csv('~/Downloads/20240927_br_mayors_proposal.csv')
 dfCandidato <- read.csv('CandidatoPrefeito.csv')
 dfVotos <- read.csv('VotosMunicipioPrefeito.csv')
+
+dentest <- rddensity(dfRDD$vote_margin, all = T)
+rdplotdensity(dentest, dfRDD$vote_margin, lcol = c("black", "black"), xlabel = "margin",
+              plotRange = c(-1, 1), plotN = 100)
 
 dfManifestosClean <- dfManifestos %>% 
   rename(X = Unnamed..0,
@@ -132,6 +138,9 @@ X <- dummy_matrix[,-1]
 R <- DictCounts$vote_margin
 Y <- DictCounts$tourism_count
 
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
+
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
@@ -162,10 +171,32 @@ mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
 
+model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, bwselect = 'cerrd')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, bwselect = 'cerrd')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, p = 2)
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, p = 2)
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
 
 R <- DictCounts$vote_margin
 Y <- DictCounts$agro_count
 
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
+
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
@@ -192,6 +223,26 @@ sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
 
 model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, kernel = 'uniform')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, bwselect = 'cerrd')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, bwselect = 'cerrd')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, p = 2)
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, p = 2)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
@@ -199,9 +250,12 @@ summary(model)
 R <- DictCounts$vote_margin
 Y <- DictCounts$saude_count
 
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
+
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
-sd(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)
 summary(model)
 
 model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio)
@@ -225,6 +279,26 @@ sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
 
 model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, kernel = 'uniform')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, bwselect = 'cerrd')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, bwselect = 'cerrd')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, p = 2)
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, p = 2)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
@@ -232,6 +306,9 @@ summary(model)
 R <- DictCounts$vote_margin
 Y <- DictCounts$fun_count
 
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
+
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
@@ -261,3 +338,24 @@ model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, kernel =
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
+
+model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, bwselect = 'cerrd')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, bwselect = 'cerrd')
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio, p = 2)
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, p = 2)
+mean(Y[abs(R)<model$bws[1]], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+summary(model)
+
