@@ -138,8 +138,9 @@ X <- dummy_matrix[,-1]
 R <- DictCounts$vote_margin
 Y <- DictCounts$tourism_count
 
-rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
-rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.2, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.2, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
 
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
@@ -190,12 +191,14 @@ model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio, p = 2)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
+
 
 R <- DictCounts$vote_margin
 Y <- DictCounts$agro_count
 
-rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
-rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.2, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.2, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
 
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
@@ -247,11 +250,13 @@ mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
 
+
 R <- DictCounts$vote_margin
 Y <- DictCounts$saude_count
 
-rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
-rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.2, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.2, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
 
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
@@ -303,11 +308,13 @@ mean(Y[abs(R)<model$bws[1]], na.rm = T)
 sd(Y[abs(R)<model$bws[1]], na.rm = T)
 summary(model)
 
+
 R <- DictCounts$vote_margin
 Y <- DictCounts$fun_count
 
-rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
-rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.15, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
+model <- rdrobust(Y, R, 0, covs = X, cluster = DictCounts$id_municipio)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.2, covs = X, cluster = DictCounts$id_municipio, alpha = 0.05)
+rdpower(data = cbind(Y,R), tau = sd(Y[abs(R)<model$bws[1] & R<0], na.rm = T)*0.2, covs = X, cluster = DictCounts$id_municipio, alpha = 0.1)
 
 model <- rdrobust(Y, R, 0, cluster = DictCounts$id_municipio)
 mean(Y[abs(R)<model$bws[1]], na.rm = T)
