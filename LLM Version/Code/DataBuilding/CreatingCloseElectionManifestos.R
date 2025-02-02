@@ -7,9 +7,7 @@ dfRDD <- read.csv('~/Documents/GitHub/FemaleFunding/CleanData/dataRDD.csv') %>%
 
 # Load unique ID for each candidate
 dfId <- read.csv('~/Dropbox/DiversityBrazil/data/BaseDosDados/PrefeitosDados2008_2024.csv') %>% 
-  filter(ano<2024,
-         tipo_eleicao == 'eleicao ordinaria',
-         situacao == 'deferido') %>% 
+  filter(tipo_eleicao == 'eleicao ordinaria') %>% 
   select(id_municipio, ano, sigla_partido, sequencial, titulo_eleitoral)
 
 # Load Manifestos, merge unique IDs and margin of victory from previous elections

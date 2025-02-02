@@ -66,29 +66,30 @@ envDict <- c(
 )
 
 urbanServDict <- c(
-    "urbano", 'urbana', 'urbanos', 'urbana', 'urbanismo', 'urbanizacao',
-    'urbanizado', 'urbanizada', 'urbanizados', 'urbanizadas', 'urbanistico',
-    'zona', 'zonas', 'ordenamento', 'calcada', 'calcadas', 'rua', 'ruas',
-    'avenida', 'avenidas', 'residencial', 'residenciais', 'comercial', 'comerciais',
-    'asfalto', 'asfaltamento', 'buraco', 'buracos', 'esburacado', 'pavimentacao',
-    'verticalizacao', 
-    'perimetral', #llama
-    'cabeamento', 'eletricidade', 'eletrica', 'regularizacao', #llama
-    'saneamento', 'agua', 'aguas', 'esgoto', 'drenagem', 'efluente', 'efluentes',
-    'lixo', 'cloracao', 'cloro', 'limpeza', 'descarte', 'pluvial', 'enchente',
-    'enchentes', 'abastecimento', 'coleta',
-    'transporte', 'onibus', 'terminal', 'terminais', 'veiculos', 'estrada', 'estradas',
-    'metro', 'trem', 'ciclovia', 'bicicleta', 'rodovias', 'ciclistas', 'ciclista', 'ciclofaixa',
-    'viario', 'rodoviario', 'metroviario', 'ferroviario', 'hidroviario',
-    'barco', 'barca', 'barcos', 'barcas', 'balsa', 'balsas', 
-    'mobilidade', 'deslocamento', 'sinalizacao', 'semaforo', 'semaforos',
-    'congestionamento', 'transito', 'transitar', 'pedestre', 'pedestres',
-    'seguranca', 'violencia', 'guarda', 'guardas', 'patrulhamento', 'patrulha',
-    'patrulhas', 'vigilancia', 'arma', 'armas', 'armamentos', 'ordem',
-    'multa', 'multas', 'infracao', 'infracoes', 'limite', 'limites', 'trafego',
-    'velocidade', 'camera', 'cameras',
-    'iluminacao', 'poste', 'postes', 'luminaria', 'luz', 'lampada', 'lampadas',
-    'luminosidade', 'noturna'
+  "urbano", 'urbana', 'urbanos', 'urbana', 'urbanismo', 'urbanizacao',
+  'urbanizado', 'urbanizada', 'urbanizados', 'urbanizadas', 'urbanistico',
+  'zona', 'zonas', 'ordenamento', 'calcada', 'calcadas', 'rua', 'ruas',
+  'avenida', 'avenidas', 'residencial', 'residenciais', 'comercial', 'comerciais',
+  'asfalto', 'asfaltamento', 'buraco', 'buracos', 'esburacado', 'esburacada', 'esburacados', 'esburacadas', 
+  'pavimentacao', 'verticalizacao', 
+  'perimetral', #llama
+  'cabeamento', 'eletricidade', 'eletrica', 'regularizacao', #llama
+  'saneamento', 'agua', 'aguas', 'esgoto', 'drenagem', 'efluente', 'efluentes',
+  'lixo', 'cloracao', 'cloro', 'limpeza', 'descarte', 'pluvial', 'enchente',
+  'enchentes', 'abastecimento', 'coleta',
+  'transporte', 'onibus', 'terminal', 'terminais', 'veiculos', 'estrada', 'estradas',
+  'metro', 'trem', 'ciclovia', 'ciclovias', 'bicicleta', 'bicicletas', 'rodovia', 'rodovias',
+  'ciclistas', 'ciclista', 'ciclofaixa',
+  'viario', 'rodoviario', 'metroviario', 'ferroviario', 'hidroviario',
+  'barco', 'barca', 'barcos', 'barcas', 'balsa', 'balsas', 
+  'mobilidade', 'deslocamento', 'sinalizacao', 'semaforo', 'semaforos',
+  'congestionamento', 'transito', 'transitar', 'pedestre', 'pedestres',
+  'seguranca', 'violencia', 'guarda', 'guardas', 'patrulhamento', 'patrulha',
+  'patrulhas', 'vigilancia', 'arma', 'armas', 'armamentos', 'ordem',
+  'multa', 'multas', 'infracao', 'infracoes', 'limite', 'limites', 'trafego',
+  'velocidade', 'camera', 'cameras',
+  'iluminacao', 'poste', 'postes', 'luminaria', 'luz', 'lampada', 'lampadas',
+  'luminosidade', 'noturna'
 )
 
 devDict <- c(

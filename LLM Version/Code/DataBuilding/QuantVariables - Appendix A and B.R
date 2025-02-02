@@ -1,5 +1,6 @@
 library(tidyverse)
 library(tidylog)
+library(rdrobust)
 
 dfCandidato <- read.csv('~/Dropbox/DiversityBrazil/data/BaseDosDados/PrefeitosDados2008_2024.csv') %>% 
   filter(tipo_eleicao == 'eleicao ordinaria',
@@ -88,9 +89,9 @@ dfComposition <- dfCandidato %>%
          educado = if_else(instrucao == 'ensino superior completo',1,0),
          homem = if_else(genero == 'masculino',1,0)) %>% 
   group_by(id_municipio, ano) %>% 
-  summarise(esquerda_comp = mean(esquerda, rm.na = T),
-            educado_comp = mean(educado, rm.na = T),
-            homem_comp = sum(homem, rm.na = T),
+  summarise(esquerda_comp = mean(esquerda),
+            educado_comp = mean(educado),
+            homem_comp = sum(homem),
             challenger_comp = n()) %>% 
   ungroup %>% 
   select(id_municipio, ano, esquerda_comp, educado_comp, homem_comp, challenger_comp) %>% 
@@ -106,23 +107,126 @@ Y <- dfComposition$challenger_comp
 
 model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition$id_municipio)
 summary(model)
+mean(Y[abs(R)<model$bws[1]&R<0], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
 
 R <- dfComposition$vote_margin
 Y <- dfComposition$homem_comp
 
 model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition$id_municipio)
 summary(model)
+mean(Y[abs(R)<model$bws[1]&R<0], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
 
-R <- dfData$vote_margin
-Y <- dfData$esquerda_comp
-
-model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition$id_municipio)
-summary(model)
-
-R <- dfData$vote_margin
-Y <- dfData$educado_comp
+R <- dfComposition$vote_margin
+Y <- dfComposition$esquerda_comp
 
 model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition$id_municipio)
 summary(model)
+mean(Y[abs(R)<model$bws[1]&R<0], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+
+R <- dfComposition$vote_margin
+Y <- dfComposition$educado_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition$id_municipio)
+summary(model)
+mean(Y[abs(R)<model$bws[1]&R<0], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+
+dfComposition0 <- dfComposition %>% filter(openSeat == 1)
+
+dummy_matrix <- model.matrix(~ as.factor(floor(id_municipio/1000000)) + as.factor(ano), data = dfComposition0)
+X <- dummy_matrix[,-1]
+
+R <- dfComposition0$vote_margin
+Y <- dfComposition0$challenger_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition0$id_municipio)
+summary(model)
+
+R <- dfComposition0$vote_margin
+Y <- dfComposition0$homem_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition0$id_municipio)
+summary(model)
+
+R <- dfComposition0$vote_margin
+Y <- dfComposition0$esquerda_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition0$id_municipio)
+summary(model)
+
+R <- dfComposition0$vote_margin
+Y <- dfComposition0$educado_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition0$id_municipio)
+summary(model)
+
+dfComposition1 <- dfComposition %>% filter(openSeat == 0)
+
+dummy_matrix <- model.matrix(~ as.factor(floor(id_municipio/1000000)) + as.factor(ano), data = dfComposition1)
+X <- dummy_matrix[,-1]
+
+R <- dfComposition1$vote_margin
+Y <- dfComposition1$challenger_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition1$id_municipio)
+summary(model)
+
+R <- dfComposition1$vote_margin
+Y <- dfComposition1$homem_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition1$id_municipio)
+summary(model)
+
+R <- dfComposition1$vote_margin
+Y <- dfComposition1$esquerda_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition1$id_municipio)
+summary(model)
+
+R <- dfComposition1$vote_margin
+Y <- dfComposition1$educado_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfComposition1$id_municipio)
+summary(model)
+
+dfCompositionH <- dfComposition %>% filter(challenger_comp > 1)
+
+dummy_matrix <- model.matrix(~ as.factor(floor(id_municipio/1000000)) + as.factor(ano) + openSeat, data = dfCompositionH)
+X <- dummy_matrix[,-1]
+
+R <- dfCompositionH$vote_margin
+Y <- dfCompositionH$challenger_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfCompositionH$id_municipio)
+summary(model)
+mean(Y[abs(R)<model$bws[1]&R<0], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+
+R <- dfCompositionH$vote_margin
+Y <- dfCompositionH$homem_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfCompositionH$id_municipio)
+summary(model)
+mean(Y[abs(R)<model$bws[1]&R<0], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+
+R <- dfCompositionH$vote_margin
+Y <- dfCompositionH$esquerda_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfCompositionH$id_municipio)
+summary(model)
+mean(Y[abs(R)<model$bws[1]&R<0], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
+
+R <- dfCompositionH$vote_margin
+Y <- dfCompositionH$educado_comp
+
+model <- rdrobust(Y, R, 0, covs = X, cluster = dfCompositionH$id_municipio)
+summary(model)
+mean(Y[abs(R)<model$bws[1]&R<0], na.rm = T)
+sd(Y[abs(R)<model$bws[1]], na.rm = T)
 
 saveRDS(dfOpenSeat, '~/Documents/GitHub/TDD-gender/LLM Version/Data/DataOpenSeat.RDS')
